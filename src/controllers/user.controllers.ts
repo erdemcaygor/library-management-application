@@ -1,20 +1,16 @@
-import Book from "../models/book.model";
-import User from "../models/user.model";
+import { userService } from "../services/user.service";
 
 class UserController {
     constructor() {
     }
 
-    async getRecommendations() {
-        const book = await Book.create({
-            name: "new book",
-            score: "-1"
-        })
-        const mike = await User.create({
-            name: "Mike Smithh",
-            book: book
-        })
-        console.log(mike);
+    async getUserList() {
+        try {
+            const users = await userService.getUserList();
+            return users;
+        } catch(e) {
+            console.log(e);
+        }
     }
 }
 

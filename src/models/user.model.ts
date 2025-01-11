@@ -3,6 +3,11 @@ import sq from '../db';
 import Book from "./book.model";
 
 const User = sq.define("User", {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false

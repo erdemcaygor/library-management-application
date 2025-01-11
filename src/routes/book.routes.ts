@@ -5,7 +5,7 @@ import { userController } from '../controllers';
 const router = Router();
 
 router.get('/', async (req, res) => {
-    const recommendations = await userController.getRecommendations();
+    const recommendations = await userController.getUserList();
     console.log(recommendations);
     res.send('our suggestions are here');
 });
