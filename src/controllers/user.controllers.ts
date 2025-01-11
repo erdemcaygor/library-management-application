@@ -1,4 +1,3 @@
-import { userService } from "../services/user.service";
 import User from "../models/user.model";
 class UserController {
     constructor() {
@@ -6,15 +5,19 @@ class UserController {
 
     async getUserList() {
         try {
-            const users = await userService.getUserList();
+            const users = await User.findAll();
             return users;
         } catch(e) {
-            console.log(e);
+            throw new Error(e);
         }
     }
 
     async createUser(name: string) {
-        return await  User.create({name});
+        try {
+            return await  User.create({name});
+        } catch(e) {
+            throw new Error(e);
+        }
     }
 }
 
