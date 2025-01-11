@@ -11,6 +11,13 @@ class UserService {
             throw new Error(e);
         }
     }
+    async createUser(name: string) {
+        try {
+            return await  User.create({name});
+        } catch(e) {
+            throw new Error(e);
+        }
+    }
 }
 
 export const userService = new UserService();
