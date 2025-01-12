@@ -6,16 +6,19 @@ const Book = sq.define("Book", {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+        unique: true
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
-      primaryKey: true
+      allowNull: false
     }
+}, {
+    indexes: [
+        {
+            unique: true,
+            fields: ['id']
+        }
+    ]
 });
 
-Book.sync().then(() => {
-    console.log("Book Model synced");
-});
-
-  export default Book;
+export default Book;

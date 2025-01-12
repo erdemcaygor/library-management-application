@@ -13,6 +13,14 @@ class BookController {
         }
     }
 
+    async getBook(id: number) {
+        try {
+            return await  Book.findByPk(id);
+        } catch(e) {
+            throw new Error(e);
+        }
+    }
+
     async createBook(name: string) {
         try {
             return await  Book.create({name});

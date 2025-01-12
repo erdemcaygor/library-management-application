@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import sq from '../db';
-import Book from "./book.model";
 
 const User = sq.define("User", {
     id: {
@@ -13,22 +12,5 @@ const User = sq.define("User", {
       allowNull: false
     }
   });
-
-User.hasOne(Book, {
-    foreignKey: {
-        name: 'name',
-        allowNull: true
-      }
-});
-Book.belongsTo(User, {
-    foreignKey: {
-        name: 'name',
-        allowNull: true
-      }
-});
-
-User.sync().then(() => {
-    console.log("User Model synced");
-});
 
 export default User;

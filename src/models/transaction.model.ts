@@ -13,7 +13,7 @@ const Transaction = sq.define('Transaction', {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: User,
+        model: 'Users',
         key: 'id',
       },
     },
@@ -21,44 +21,40 @@ const Transaction = sq.define('Transaction', {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: Book,
+        model: 'Books',
         key: 'id',
       },
-      unique: 'activeTransaction',
+    },
+    score: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        min: 1,
+        max: 5
+      }
+    },
+    returnedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
     borrowedAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: NOW,
     },
-    returnedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    score: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
   }, {
     indexes: [
       {
         unique: true,
-        fields: ['bookId', 'returnedAt'],
+        fields: ['bookId'],
         where: {
-          returnedAt: null,
-        },
-      },
-    ],
+          returnedAt: null
+        }
+      }
+    ]
   });
-  
-  User.hasMany(Transaction, { foreignKey: 'userId' });
-  Transaction.belongsTo(User, { foreignKey: 'userId' });
-  
-  Book.hasMany(Transaction, { foreignKey: 'bookId' });
-  Transaction.belongsTo(Book, { foreignKey: 'bookId' });
 
-Transaction.sync().then(() => {
-    console.log("Transaction Model synced");
-});
+Transaction.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE' });
+Transaction.belongsTo(Book, { foreignKey: 'bookId' });
 
 export default Transaction;

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { userController } from "../controllers";
+import { bookController, userController } from "../controllers";
 import { body, validationResult } from "express-validator";
 
 const router = Router();
@@ -29,5 +29,23 @@ router.post(
     }
   }
 );
+
+router.post("/:userId/borrow/:bookId", [], async (req, res) => {
+    const {userId, bookId} = req.params;
+    try {
+        const user = await userController.getUser(userId);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        const book = await bookController.getBook(bookId);
+        if (!book) {
+            return res.status(404).json({ error: "Book not found" });
+        }
+        const transaction = await userController.borrowBook(userId, bookId);
+        return res.status(200).json({ success: "Book borrowed successfully!", transaction });
+    } catch {
+        return res.status(500).send();
+    }
+});
 
 export const userRouter = router;
