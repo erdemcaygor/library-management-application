@@ -30,6 +30,15 @@ router.post(
   }
 );
 
+router.get("/:userId", [], async (req, res) => {
+    const {userId} = req.params;
+    const user = await userController.getUser(userId);
+    if (!user) {
+        return res.status(404).json({ error: "User not found" });
+    }
+    res.send(user);
+});
+
 router.post("/:userId/borrow/:bookId", [], async (req, res) => {
     const {userId, bookId} = req.params;
     try {
