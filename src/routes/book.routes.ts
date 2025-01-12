@@ -1,4 +1,3 @@
-
 import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import { bookController } from '../controllers';
@@ -30,5 +29,14 @@ router.get("/", async (req, res) => {
       }
     }
   );
+
+  router.get("/:bookId", [], async (req, res) => {
+    const {bookId} = req.params;
+    const book = await bookController.getBook(Number(bookId));
+    if ('error' in book) {
+        return res.status(400).json({ error: book.error });
+    }
+    res.send(book);
+  });
 
 export const bookRouter = router;
