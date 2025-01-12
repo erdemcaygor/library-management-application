@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
+import 'dotenv/config';
 import syncDatabase from './syncdb';
 
 import { bookRouter, userRouter } from './routes';
