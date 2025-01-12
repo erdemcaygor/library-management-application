@@ -70,9 +70,9 @@ A RESTful API for managing a library's book borrowing system, built with Node.js
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| DB_NAME | Database name | - |
-| DB_USER | Database username | - |
-| DB_PASSWORD | Database password | - |
-| DB_HOST | Database host | localhost |
-| DB_PORT | Database port | 5432 |
+| POSTGRES_DB | Database name | - |
+| POSTGRES_USER | Database username | - |
+| POSTGRES_PASSWORD | Database password | - |
+| POSTGRES_HOST | Database host | localhost |
+| POSTGRES_PORT | Database port | 5432 |
 | NODE_ENV | Environment | development |
