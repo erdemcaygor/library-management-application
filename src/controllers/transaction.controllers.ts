@@ -7,9 +7,13 @@ type TransactionResult = Model<TransactionAttributes> | { error: string };
 class TransactionController {
     async borrowBook(userId: number, bookId: number): Promise<TransactionResult> {
         try {
+            const existingTransaction = await Transaction.findOne<Model<TransactionAttributes>>({where: {bookId, userId}});
+            if (existingTransaction) {
+                return {error: 'Book already borrowed!'};
+            }
             const transaction = await Transaction.findOne<Model<TransactionAttributes>>({where: {bookId, returnedAt: null}});
             if (transaction) {
-                return {error: userId.toString() === transaction?.get('userId')?.toString() ? 'Book already borrowed!' : 'Book already borrowed by another user!'};
+                return {error: 'Book borrowed by another user!'};
             }
             return await Transaction.create({userId, bookId});
         } catch(e) {
