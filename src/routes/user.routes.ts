@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { bookController, userController } from "../controllers";
+import { bookController, transactionController, userController } from "../controllers";
 import { body, validationResult } from "express-validator";
 
 const router = Router();
@@ -24,7 +24,7 @@ router.post(
         const {name} = req.body;
         const user = await userController.createUser(name);
         return res.status(200).json({ success: "User created successfully!", user });
-    } catch(e) {
+    } catch {
         return res.status(500).send();
     }
   }
@@ -41,11 +41,36 @@ router.post("/:userId/borrow/:bookId", [], async (req, res) => {
         if (!book) {
             return res.status(404).json({ error: "Book not found" });
         }
-        const transaction = await userController.borrowBook(userId, bookId);
+        const transaction = await transactionController.borrowBook(userId, bookId);
+        if ('error' in transaction) {
+            return res.status(400).json({ error: transaction.error });
+        }
         return res.status(200).json({ success: "Book borrowed successfully!", transaction });
     } catch {
         return res.status(500).send();
     }
+});
+
+router.post("/:userId/return/:bookId",   
+    [
+        body("score").trim().notEmpty()
+    ], 
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const {userId, bookId} = req.params;    
+        const {score} = req.body;
+        try {
+            const transaction = await transactionController.returnBook(userId, bookId, score);
+            if ('error' in transaction) {
+                return res.status(400).json({ error: transaction.error });
+            }
+            return res.status(200).json({ success: "Book returned successfully!", transaction });
+        } catch {
+            return res.status(500).send();
+        }
 });
 
 export const userRouter = router;

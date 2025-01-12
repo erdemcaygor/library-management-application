@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
           const {name} = req.body;
           const book = await bookController.createBook(name);
           return res.status(200).json({ success: "Book created successfully!", book });
-      } catch(e) {
+      } catch {
           return res.status(500).send();
       }
     }

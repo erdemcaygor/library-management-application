@@ -1,9 +1,18 @@
-import { DataTypes, NOW } from 'sequelize';
+import { DataTypes, Model, NOW } from 'sequelize';
 import sq from '../db';
 import Book from './book.model';
 import User from './user.model';
 
-const Transaction = sq.define('Transaction', {
+export type TransactionAttributes = {
+    id: number;
+    userId: number;
+    bookId: number;
+    score: number;
+    returnedAt: Date;
+    borrowedAt: Date;
+}
+
+const Transaction = sq.define<Model<TransactionAttributes>>('Transaction', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -27,11 +36,7 @@ const Transaction = sq.define('Transaction', {
     },
     score: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        min: 1,
-        max: 5
-      }
+      allowNull: true
     },
     returnedAt: {
       type: DataTypes.DATE,
